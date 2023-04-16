@@ -65,9 +65,10 @@ function sleep(ms) {
 }
 
 function getModelMapper(model) {
-  if (model === "gpt-3.5-turbo") {
+  // if (model === "gpt-3.5-turbo") {
+  if (model.includes("gpt-3.5")) {
     return { resourceName: resourceNameGPT35, deployName: deployNameGPT35 };
-  } else if (model === "gpt-4") {
+  } else if (model.includes ("gpt-4")) {
     return { resourceName: resourceNameGPT4, deployName: deployNameGPT4 };
   } else {
     throw new Error("Invalid model specified");
