@@ -55,21 +55,7 @@ async function handleRequest(request,res, path) {
     return;
   }
   res.setHeader('Content-Type', response.headers.get('Content-Type'));
-  s = await response.text();
-  // const trimmedResponseBody = responseBody.trim();
-  s = s.replace(/\\n/g, "\\n")
-               .replace(/\\'/g, "\\'")
-               .replace(/\\"/g, '\\"')
-               .replace(/\\&/g, "\\&")
-               .replace(/\\r/g, "\\r")
-               .replace(/\\t/g, "\\t")
-               .replace(/\\b/g, "\\b")
-               .replace(/\\f/g, "\\f");
-// Remove non-printable and other non-valid JSON characters
-s = s.replace(/[\u0000-\u0019]+/g,"");
-const responseObject = JSON.parse(s);
-res.status(200).json(responseObject);
-  // await stream(response.body, res);
+  await stream(response.body, res);
 }
 
 function sleep(ms) {
@@ -106,7 +92,7 @@ async function stream(readable, res) {
     // Loop through all but the last line, which may be incomplete.
     for (let i = 0; i < lines.length - 1; i++) {
       res.write(lines[i] + delimiter);
-      await sleep(30);
+      await sleep(5);
     }
     buffer = lines[lines.length - 1];
   }
