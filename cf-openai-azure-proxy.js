@@ -49,15 +49,15 @@ async function handleRequest(request,res, path) {
     },
     body: typeof body === 'object' ? JSON.stringify(body) : '{}',
   };
-
-  // let { readable, writable } = new TransformStream()
   const response = await fetch(fetchAPI, payload);
   if (response.status !== 200) {
     res.status(response.status).send(response.statusText);
     return;
   }
   res.setHeader('Content-Type', response.headers.get('Content-Type'));
-  await stream(response.body, res);
+  const responseBody = await response.text();
+  res.status(200).json(responseBody);
+  // await stream(response.body, res);
 }
 
 function sleep(ms) {
