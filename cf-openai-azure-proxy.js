@@ -55,10 +55,20 @@ async function handleRequest(request,res, path) {
     return;
   }
   res.setHeader('Content-Type', response.headers.get('Content-Type'));
-  const responseBody = await response.text();
-  const trimmedResponseBody = responseBody.trim();
-  const responseObject = JSON.parse(trimmedResponseBody);
-  res.status(200).json(responseObject);
+  const s = await response.text();
+  // const trimmedResponseBody = responseBody.trim();
+  s = s.replace(/\\n/g, "\\n")
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f");
+// Remove non-printable and other non-valid JSON characters
+s = s.replace(/[\u0000-\u0019]+/g,"");
+const responseObject = JSON.parse(s);
+res.status(200).json(responseObject);
   // await stream(response.body, res);
 }
 
