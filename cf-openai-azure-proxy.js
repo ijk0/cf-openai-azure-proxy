@@ -55,7 +55,7 @@ async function handleRequest(request,res, path) {
     return;
   }
   res.setHeader('Content-Type', response.headers.get('Content-Type'));
-  const s = await response.text();
+  s = await response.text();
   // const trimmedResponseBody = responseBody.trim();
   s = s.replace(/\\n/g, "\\n")
                .replace(/\\'/g, "\\'")
