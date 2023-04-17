@@ -56,7 +56,9 @@ async function handleRequest(request,res, path) {
   }
   res.setHeader('Content-Type', response.headers.get('Content-Type'));
   const responseBody = await response.text();
-  res.status(200).json(responseBody.trim());
+  const trimmedResponseBody = responseBody.trim();
+  const responseObject = JSON.parse(trimmedResponseBody);
+  res.status(200).json(responseObject);
   // await stream(response.body, res);
 }
 
